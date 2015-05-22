@@ -1,15 +1,13 @@
 package com.skachan.gwtp.demo.client.application;
 
 import com.github.gwtbootstrap.client.ui.DataGrid;
+import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -20,10 +18,11 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SelectionModel;
-import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.ProvidesKey;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.skachan.gwtp.demo.client.application.custom.components.CustomSelectableCell;
+import com.skachan.gwtp.demo.client.application.custom.components.CheckBoxHeader;
 import com.skachan.gwtp.demo.server.entity.Role;
 import com.skachan.gwtp.demo.server.entity.User;
 
@@ -36,14 +35,14 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
     }
 
     private ListDataProvider<User> userDataProvider = new ListDataProvider<>();
-    final SelectionModel<User> selectionModel = new SingleSelectionModel<>();
-    private static final Template TEMPLATE = GWT.create(Template.class);
+    MultiSelectionModel<User> selectionModel = new MultiSelectionModel<>(KEY_PROVIDER);
 
-    interface Template extends SafeHtmlTemplates {
-        @Template("<option value=\"{0}\" title=\"{1}\">{1}</option>")
-        SafeHtml optionTemplate(String key, String text);
-    }
-
+    public static ProvidesKey<User> KEY_PROVIDER = new ProvidesKey<User>() {
+        @Override
+        public Object getKey(User item) {
+            return item.getId();
+        }
+    };
 
     @UiField
     TextBox nameField;
@@ -53,6 +52,8 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
     HTML error;
     @UiField(provided = true)
     DataGrid<User> dataGrid = new DataGrid<>(20, GWT.<DataGrid.SelectableResources>create(DataGrid.SelectableResources.class));
+    @UiField
+    Heading hSurname,hEmail;
 
 
     @Inject
@@ -105,7 +106,6 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         roles.add(String.valueOf(Role.Admin));
         roles.add(String.valueOf(Role.User));
         SelectionCell rolesCell = new SelectionCell(roles);
-        CustomSelectableCell<User> csc = new CustomSelectableCell<>(roles);
 
         Column<User, String> categoryColumn = new Column<User, String>(rolesCell) {
             @Override
@@ -124,8 +124,8 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
                 }
             }
         });
-
-        dataGrid.addColumn(checkColumn, SafeHtmlUtils.fromSafeConstant("<br/>"));
+        CheckBoxHeader checkBoxHeader = new CheckBoxHeader(selectionModel,userDataProvider);
+        dataGrid.addColumn(checkColumn,checkBoxHeader);
         dataGrid.setColumnWidth(checkColumn,10, Style.Unit.PX);
         dataGrid.addColumn(idColumn,"Id");
         dataGrid.setColumnWidth(idColumn,50, Style.Unit.PX);
@@ -135,16 +135,24 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         dataGrid.setColumnWidth(categoryColumn,100, Style.Unit.PX);
         dataGrid.setSelectionModel(selectionModel);
         userDataProvider.addDataDisplay(dataGrid);
-
+        selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent event) {
+                hEmail.setText(" " + selectionModel.getSelectedSet().iterator().next().getEmail());
+                hSurname.setText(" " + selectionModel.getSelectedSet().iterator().next().getSurname());
+            }
+        });
     }
 
     private void initTableValues(){
         List<User> users = new ArrayList<>();
-        users.add(new User(1l,"Stepan","Kachan","stepankachan@mail.ru",Role.Admin));
-        users.add(new User(1l,"Igor","Ivahiv","ivaha@mail.ru",Role.User));
-        users.add(new User(1l,"Igor","Ivahiv","ivaha@mail.ru",Role.User));
-        users.add(new User(1l,"Igor","Ivahiv","ivaha@mail.ru",Role.User));
-        users.add(new User(1l,"Igor","Ivahiv","ivaha@mail.ru",Role.User));
+        for(int i = 1; i < 8; i++){
+            if(i%2 == 0)
+                users.add(new User(i, "User "+ i ,"Surname "+ i, i+"@mail.ru",Role.Admin));
+            else
+                users.add(new User(i, "User "+ i ,"Surname "+ i, i+"@mail.ru",Role.User));
+        }
+
         userDataProvider.getList().addAll(users);
     }
 
