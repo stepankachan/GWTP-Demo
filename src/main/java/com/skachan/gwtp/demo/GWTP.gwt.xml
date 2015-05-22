@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<module rename-to='GWTP'>
+    <!-- Inherit the core Web Toolkit stuff. -->
+    <inherits name='com.google.gwt.user.User' />
+    <inherits name='com.google.gwt.inject.Inject' />
+    <inherits name="com.github.gwtbootstrap.Bootstrap"/>
+
+    <!-- Default css -->
+    <inherits name='com.google.gwt.user.theme.standard.Standard' />
+
+    <!-- Other module inherits -->
+    <inherits name='com.gwtplatform.dispatch.Dispatch' />
+    
+    <inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
+
+    <source path='client' />
+    <source path='shared' />
+
+    <set-configuration-property name="gin.ginjector.modules" 
+                                value="com.skachan.gwtp.demo.client.gin.ClientModule"/>
+    <set-configuration-property name="CssResource.enableGss" value="true"/>
+</module>
