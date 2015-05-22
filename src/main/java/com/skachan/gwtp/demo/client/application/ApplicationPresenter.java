@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 public class ApplicationPresenter extends Presenter<ApplicationPresenter.MyView, ApplicationPresenter.MyProxy>
         implements ApplicationUiHandlers {
+
     @ProxyStandard
     @NameToken(NameTokens.home)
     interface MyProxy extends ProxyPlace<ApplicationPresenter> {
@@ -24,22 +25,15 @@ public class ApplicationPresenter extends Presenter<ApplicationPresenter.MyView,
 
     interface MyView extends View, HasUiHandlers<ApplicationUiHandlers> {
         void resetAndFocus();
-
         void setError(String errorText);
     }
 
     private final PlaceManager placeManager;
 
     @Inject
-    ApplicationPresenter(
-            EventBus eventBus,
-            MyView view,
-            MyProxy proxy,
-            PlaceManager placeManager) {
+    ApplicationPresenter(EventBus eventBus, MyView view, MyProxy proxy, PlaceManager placeManager) {
         super(eventBus, view, proxy, RevealType.Root);
-
         this.placeManager = placeManager;
-
         getView().setUiHandlers(this);
     }
 

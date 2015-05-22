@@ -6,7 +6,6 @@ import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.skachan.gwtp.demo.client.application.ApplicationModule;
 import com.skachan.gwtp.demo.client.place.NameTokens;
-import com.skachan.gwtp.demo.client.resources.ResourceLoader;
 
 /**
  * See more on setting up the PlaceManager on <a
@@ -28,6 +27,5 @@ public class ClientModule extends AbstractPresenterModule {
 
         bindConstant().annotatedWith(GaAccount.class).to(ANALYTICS_ACCOUNT);
 
-        bind(ResourceLoader.class).asEagerSingleton();
     }
 }
