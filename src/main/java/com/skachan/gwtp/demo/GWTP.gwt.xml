@@ -17,7 +17,7 @@
     <source path='shared' />
     <source path='server'/>
 
-    <stylesheet src='client/application/resources/gwtp.css'/>
+    <stylesheet src='gwtp.css'/>
 
     <set-configuration-property name="gin.ginjector.modules" value="com.skachan.gwtp.demo.client.gin.ClientModule"/>
 </module>

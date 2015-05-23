@@ -1,4 +1,4 @@
-package com.skachan.gwtp.demo.server.entity;
+package com.skachan.gwtp.demo.server.model;
 
 import java.io.Serializable;
 

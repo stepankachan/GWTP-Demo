@@ -37,6 +37,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Maven: com.github.gwtbootstrap:gwt-bootstrap:2.0.4.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.gwt:gwt-user:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:1.0.0.GA" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:sources:1.0.0.GA" level="project" />
@@ -57,7 +58,7 @@
     <orderEntry type="library" name="Maven: com.gwtplatform:gwtp-dispatch-rpc-server:1.5-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.gwtplatform:gwtp-dispatch-rpc-shared:1.5-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.gwtplatform:gwtp-dispatch-common-shared:1.5-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.github.gwtbootstrap:gwt-bootstrap:2.0.4.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.gwtbootstrap:gwt-bootstrap:2.3.2.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.google.inject:guice:3.0" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />

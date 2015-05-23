@@ -1,13 +1,18 @@
 package com.skachan.gwtp.demo.client.application;
 
+import com.github.gwtbootstrap.client.ui.CheckBox;
 import com.github.gwtbootstrap.client.ui.DataGrid;
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -23,8 +28,8 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.skachan.gwtp.demo.client.application.custom.components.CheckBoxHeader;
-import com.skachan.gwtp.demo.server.entity.Role;
-import com.skachan.gwtp.demo.server.entity.User;
+import com.skachan.gwtp.demo.server.model.Role;
+import com.skachan.gwtp.demo.server.model.User;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -44,47 +49,36 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         }
     };
 
-    @UiField
-    TextBox nameField;
-    @UiField
-    Button sendButton;
-    @UiField
-    HTML error;
     @UiField(provided = true)
     DataGrid<User> dataGrid = new DataGrid<>(20, GWT.<DataGrid.SelectableResources>create(DataGrid.SelectableResources.class));
     @UiField
-    Heading hSurname,hEmail;
+    Heading hSurname, hEmail;
+    @UiField
+    CheckBox cbSelection, cbCheckboxes;
 
 
     @Inject
     ApplicationView(Binder uiBinder) {
         initWidget(uiBinder.createAndBindUi(this));
         initTableColumns();
-        initTableValues();
+        //initTableValues();
     }
 
     @Override
-    public void resetAndFocus() {
-        nameField.setFocus(true);
-        nameField.selectAll();
+    public void populateTable(List<User> list) {
+        userDataProvider.getList().addAll(list);
     }
-
-    @Override
-    public void setError(String errorText) {
-        error.setHTML(errorText);
-    }
-
-    @UiHandler("sendButton")
-    void onSend(ClickEvent event) {
-        getUiHandlers().sendName(nameField.getText());
-    }
-
 
     private void initTableColumns() {
         Column<User, Boolean> checkColumn = new Column<User, Boolean>(new CheckboxCell(true, false)) {
             @Override
             public Boolean getValue(User object) {
                 return selectionModel.isSelected(object);
+            }
+
+            @Override
+            public void render(Cell.Context context, User object, SafeHtmlBuilder sb) {
+                super.render(context, object, sb);
             }
         };
 
@@ -124,15 +118,15 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
                 }
             }
         });
-        CheckBoxHeader checkBoxHeader = new CheckBoxHeader(selectionModel,userDataProvider);
-        dataGrid.addColumn(checkColumn,checkBoxHeader);
-        dataGrid.setColumnWidth(checkColumn,10, Style.Unit.PX);
-        dataGrid.addColumn(idColumn,"Id");
-        dataGrid.setColumnWidth(idColumn,50, Style.Unit.PX);
+        CheckBoxHeader checkBoxHeader = new CheckBoxHeader(selectionModel, userDataProvider);
+        dataGrid.addColumn(checkColumn, checkBoxHeader);
+        dataGrid.setColumnWidth(checkColumn, 10, Style.Unit.PX);
+        dataGrid.addColumn(idColumn, "Id");
+        dataGrid.setColumnWidth(idColumn, 50, Style.Unit.PX);
         dataGrid.addColumn(firstNameColumn, "Name");
-        dataGrid.setColumnWidth(firstNameColumn,100, Style.Unit.PX);
+        dataGrid.setColumnWidth(firstNameColumn, 100, Style.Unit.PX);
         dataGrid.addColumn(categoryColumn, "Role");
-        dataGrid.setColumnWidth(categoryColumn,100, Style.Unit.PX);
+        dataGrid.setColumnWidth(categoryColumn, 100, Style.Unit.PX);
         dataGrid.setSelectionModel(selectionModel);
         userDataProvider.addDataDisplay(dataGrid);
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -142,18 +136,40 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
                 hSurname.setText(" " + selectionModel.getSelectedSet().iterator().next().getSurname());
             }
         });
+
+        cbCheckboxes.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+            @Override
+            public void onValueChange(ValueChangeEvent<Boolean> event) {
+                if (cbCheckboxes.getValue()) {
+
+                }
+            }
+        });
+
+        cbSelection.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Boolean> event) {
+                if (cbSelection.getValue()) {
+
+                } else
+                    dataGrid.setSelectionModel(selectionModel);
+            }
+        });
     }
 
-    private void initTableValues(){
+
+
+  /*  private void initTableValues() {
         List<User> users = new ArrayList<>();
-        for(int i = 1; i < 8; i++){
-            if(i%2 == 0)
-                users.add(new User(i, "User "+ i ,"Surname "+ i, i+"@mail.ru",Role.Admin));
+        for (int i = 1; i < 8; i++) {
+            if (i % 2 == 0)
+                users.add(new User(i, "User " + i, "Surname " + i, i + "@mail.ru", Role.Admin));
             else
-                users.add(new User(i, "User "+ i ,"Surname "+ i, i+"@mail.ru",Role.User));
+                users.add(new User(i, "User " + i, "Surname " + i, i + "@mail.ru", Role.User));
         }
 
         userDataProvider.getList().addAll(users);
-    }
+    }*/
 
 }
