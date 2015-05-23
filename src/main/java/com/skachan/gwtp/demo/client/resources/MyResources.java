@@ -10,7 +10,7 @@ public interface MyResources extends ClientBundle {
 
     MyResources INSTANCE = GWT.create(MyResources.class);
 
-    @ClientBundle.Source("gwtp.css")
+    @ClientBundle.Source("css/gwtp.css")
     GwtpStyle gwtp();
 
 }

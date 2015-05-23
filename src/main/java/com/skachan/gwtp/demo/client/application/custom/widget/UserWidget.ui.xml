@@ -1,0 +1,19 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+             xmlns:g='urn:import:com.google.gwt.user.client.ui'
+             xmlns:b='urn:import:com.github.gwtbootstrap.client.ui'>
+
+    <ui:with field="res" type="com.skachan.gwtp.demo.client.resources.MyResources"/>
+
+        <g:VerticalPanel>
+            <b:WellForm>
+            <g:HorizontalPanel>
+                <b:Icon type="USER" size="LARGE"/>
+                <b:Heading size="4" ui:field="hUserTitle" addStyleNames="{res.gwtp.userWidgetHeading}"/>
+            </g:HorizontalPanel>
+            <b:Heading size="5" ui:field="pName"/>
+            <b:Heading size="5" ui:field="pSurname"/>
+            <b:Heading size="5" ui:field="pEmail"/>
+            <b:Heading size="5" ui:field="pRole"/>
+            </b:WellForm>
+        </g:VerticalPanel>
+</ui:UiBinder>

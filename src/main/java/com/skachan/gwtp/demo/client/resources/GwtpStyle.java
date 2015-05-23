@@ -8,6 +8,7 @@ import com.google.gwt.resources.client.CssResource;
 public interface GwtpStyle extends CssResource{
 
     String container();
-    String bordered();
     String checkBoxes();
+    String userWidgetHeading();
+    String blackThumbnailLink();
 }

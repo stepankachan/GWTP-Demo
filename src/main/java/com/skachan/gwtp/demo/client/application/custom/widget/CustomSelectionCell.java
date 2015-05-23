@@ -1,4 +1,4 @@
-package com.skachan.gwtp.demo.client.application.custom.components;
+package com.skachan.gwtp.demo.client.application.custom.widget;
 
 import com.google.gwt.cell.client.AbstractInputCell;
 import com.google.gwt.cell.client.ValueUpdater;

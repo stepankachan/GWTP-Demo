@@ -18,12 +18,9 @@ public class GetUsersHandler implements ActionHandler<GetUsersAction, GetUsersRe
 
     @Override
     public GetUsersResult execute(GetUsersAction getUsersAction, ExecutionContext executionContext) throws ActionException {
-            List<User> users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         for (int i = 1; i < 8; i++) {
-            if (i % 2 == 0)
-                users.add(new User(i, "User " + i, "Surname " + i, i + "@mail.ru", Role.Admin));
-            else
-                users.add(new User(i, "User " + i, "Surname " + i, i + "@mail.ru", Role.User));
+            users.add(new User(i, "Name " + i, "Surname " + i, i + "@mail.com", i % 2 == 0 ? Role.Admin : Role.User));
         }
         return new GetUsersResult(users);
     }

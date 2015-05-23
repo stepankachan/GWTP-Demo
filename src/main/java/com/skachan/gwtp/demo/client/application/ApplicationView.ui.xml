@@ -35,7 +35,7 @@
                                     <b:CheckBox ui:field="cbCheckboxes" addStyleNames="{res.gwtp.checkBoxes}"/>
                                     <b:Heading size="5" text="disable checkboxes"/>
                                 </g:HorizontalPanel>
-                                <b:Button type="INFO" text="GO!"/>
+                                <b:Button type="INFO" text="GO!" ui:field="btnGo"/>
                             </g:VerticalPanel>
                         </g:center>
                     </g:DockLayoutPanel>

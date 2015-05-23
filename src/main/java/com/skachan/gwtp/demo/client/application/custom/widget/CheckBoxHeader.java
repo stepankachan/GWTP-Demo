@@ -1,4 +1,4 @@
-package com.skachan.gwtp.demo.client.application.custom.components;
+package com.skachan.gwtp.demo.client.application.custom.widget;
 
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;

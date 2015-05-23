@@ -1,0 +1,20 @@
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+             xmlns:g="urn:import:com.google.gwt.user.client.ui"
+             xmlns:b="urn:import:com.github.gwtbootstrap.client.ui">
+
+    <ui:style>
+        @external modal-backdrop, fade, in;
+        .modal-backdrop.fade.in {
+            opacity: 0.4 !important;
+        }
+    </ui:style>
+
+    <g:HTMLPanel>
+        <b:Modal ui:field="modal" title="Selected Users" animation="true" width="700px">
+            <b:Thumbnails ui:field="contentPanel"/>
+            <b:ModalFooter>
+                <b:Button icon="OK" type="INFO" ui:field="btnOk">OK</b:Button>
+            </b:ModalFooter>
+        </b:Modal>
+    </g:HTMLPanel>
+</ui:UiBinder>

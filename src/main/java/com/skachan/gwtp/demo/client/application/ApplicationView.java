@@ -1,19 +1,19 @@
 package com.skachan.gwtp.demo.client.application;
 
+import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.CheckBox;
 import com.github.gwtbootstrap.client.ui.DataGrid;
 import com.github.gwtbootstrap.client.ui.Heading;
-import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -21,8 +21,9 @@ import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
-import com.skachan.gwtp.demo.client.application.custom.components.CheckBoxHeader;
-import com.skachan.gwtp.demo.client.application.custom.components.CustomSelectionCell;
+import com.skachan.gwtp.demo.client.application.custom.component.SelectedUsersPopup;
+import com.skachan.gwtp.demo.client.application.custom.widget.CheckBoxHeader;
+import com.skachan.gwtp.demo.client.application.custom.widget.CustomSelectionCell;
 import com.skachan.gwtp.demo.client.resources.MyResources;
 import com.skachan.gwtp.demo.server.model.Role;
 import com.skachan.gwtp.demo.server.model.User;
@@ -51,6 +52,8 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
     Heading hSurname, hEmail;
     @UiField
     CheckBox cbSelection, cbCheckboxes;
+    @UiField
+    Button btnGo;
 
 
     @Inject
@@ -58,6 +61,14 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         MyResources.INSTANCE.gwtp().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
         initTableColumns();
+        btnGo.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                SelectedUsersPopup popup = new SelectedUsersPopup();
+                popup.addUsers(selectionModel.getSelectedSet());
+                popup.show();
+            }
+        });
     }
 
     @Override
@@ -71,11 +82,6 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
             public Boolean getValue(User object) {
                 return selectionModel.isSelected(object);
             }
-
-            @Override
-            public void render(Cell.Context context, User object, SafeHtmlBuilder sb) {
-                super.render(context, object, sb);
-            }
         };
 
         TextColumn<User> idColumn = new TextColumn<User>() {
@@ -84,7 +90,6 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
                 return String.valueOf(object.getId());
             }
         };
-
         TextColumn<User> firstNameColumn = new TextColumn<User>() {
             @Override
             public String getValue(User user) {
@@ -95,6 +100,7 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         final List<String> roles = new ArrayList<>();
         roles.add(String.valueOf(Role.Admin));
         roles.add(String.valueOf(Role.User));
+
         CustomSelectionCell<User> rolesCell = new CustomSelectionCell<>(roles);
 
         Column<User, String> categoryColumn = new Column<User, String>(rolesCell) {
@@ -125,31 +131,12 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         dataGrid.setColumnWidth(categoryColumn, 50, Style.Unit.PX);
         dataGrid.setSelectionModel(selectionModel);
         userDataProvider.addDataDisplay(dataGrid);
+        dataGrid.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
                 hEmail.setText(" " + selectionModel.getSelectedSet().iterator().next().getEmail());
                 hSurname.setText(" " + selectionModel.getSelectedSet().iterator().next().getSurname());
-            }
-        });
-
-        cbCheckboxes.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-
-            @Override
-            public void onValueChange(ValueChangeEvent<Boolean> event) {
-                if (cbCheckboxes.getValue()) {
-
-                }
-            }
-        });
-
-        cbSelection.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-            @Override
-            public void onValueChange(ValueChangeEvent<Boolean> event) {
-                if (cbSelection.getValue()) {
-
-                } else
-                    dataGrid.setSelectionModel(selectionModel);
             }
         });
     }
