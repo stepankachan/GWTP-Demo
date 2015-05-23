@@ -6,21 +6,15 @@ import com.github.gwtbootstrap.client.ui.Heading;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
-import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
@@ -28,6 +22,8 @@ import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.skachan.gwtp.demo.client.application.custom.components.CheckBoxHeader;
+import com.skachan.gwtp.demo.client.application.custom.components.CustomSelectionCell;
+import com.skachan.gwtp.demo.client.resources.MyResources;
 import com.skachan.gwtp.demo.server.model.Role;
 import com.skachan.gwtp.demo.server.model.User;
 
@@ -59,9 +55,9 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
 
     @Inject
     ApplicationView(Binder uiBinder) {
+        MyResources.INSTANCE.gwtp().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
         initTableColumns();
-        //initTableValues();
     }
 
     @Override
@@ -99,7 +95,7 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         final List<String> roles = new ArrayList<>();
         roles.add(String.valueOf(Role.Admin));
         roles.add(String.valueOf(Role.User));
-        SelectionCell rolesCell = new SelectionCell(roles);
+        CustomSelectionCell<User> rolesCell = new CustomSelectionCell<>(roles);
 
         Column<User, String> categoryColumn = new Column<User, String>(rolesCell) {
             @Override
@@ -124,9 +120,9 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         dataGrid.addColumn(idColumn, "Id");
         dataGrid.setColumnWidth(idColumn, 50, Style.Unit.PX);
         dataGrid.addColumn(firstNameColumn, "Name");
-        dataGrid.setColumnWidth(firstNameColumn, 100, Style.Unit.PX);
+        dataGrid.setColumnWidth(firstNameColumn, 50, Style.Unit.PX);
         dataGrid.addColumn(categoryColumn, "Role");
-        dataGrid.setColumnWidth(categoryColumn, 100, Style.Unit.PX);
+        dataGrid.setColumnWidth(categoryColumn, 50, Style.Unit.PX);
         dataGrid.setSelectionModel(selectionModel);
         userDataProvider.addDataDisplay(dataGrid);
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -157,19 +153,5 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
             }
         });
     }
-
-
-
-  /*  private void initTableValues() {
-        List<User> users = new ArrayList<>();
-        for (int i = 1; i < 8; i++) {
-            if (i % 2 == 0)
-                users.add(new User(i, "User " + i, "Surname " + i, i + "@mail.ru", Role.Admin));
-            else
-                users.add(new User(i, "User " + i, "Surname " + i, i + "@mail.ru", Role.User));
-        }
-
-        userDataProvider.getList().addAll(users);
-    }*/
 
 }

@@ -2,39 +2,45 @@
              xmlns:g='urn:import:com.google.gwt.user.client.ui'
              xmlns:b='urn:import:com.github.gwtbootstrap.client.ui'>
 
-    <g:HTMLPanel>
-        <g:SplitLayoutPanel ui:field="layout" width="800px" height="500px">
-            <g:north size="300">
-                <b:DataGrid ui:field="dataGrid" height="300px" striped="true" condensed="true" bordered="true"/>
-            </g:north>
-            <g:center size="100">
-                <g:DockLayoutPanel unit='PCT'>
-                    <g:west size='50'>
-                        <g:VerticalPanel width="100%">
-                            <g:HorizontalPanel>
-                                <b:Heading size="4" text="Email : "/>
-                                <b:Heading size="4" ui:field="hEmail"/>
-                            </g:HorizontalPanel>
-                            <g:HorizontalPanel>
-                                <b:Heading size="4" text="Surname : "/>
-                                <b:Heading size="4" ui:field="hSurname"/>
-                            </g:HorizontalPanel>
-                        </g:VerticalPanel>
-                    </g:west>
-                    <g:east size='50'>
-                        <g:VerticalPanel width="100%">
-                            <g:HorizontalPanel>
-                                <b:Heading size="4" text="disable selection : "/>
-                                <b:CheckBox ui:field="cbSelection"/>
-                            </g:HorizontalPanel>
-                            <g:HorizontalPanel>
-                                <b:Heading size="4" text="disable checkboxes : "/>
-                                <b:CheckBox ui:field="cbCheckboxes"/>
-                            </g:HorizontalPanel>
-                        </g:VerticalPanel>
-                    </g:east>
-                </g:DockLayoutPanel>
-            </g:center>
-        </g:SplitLayoutPanel>
+    <ui:with field="res" type="com.skachan.gwtp.demo.client.resources.MyResources"/>
+
+    <g:HTMLPanel addStyleNames="{res.gwtp.container}">
+        <b:WellForm>
+            <g:SplitLayoutPanel ui:field="layout" width="400px" height="500px">
+                <g:north size="300">
+                    <b:DataGrid ui:field="dataGrid" width="400px" height="400px" striped="true" condensed="true"
+                                bordered="true"/>
+                </g:north>
+                <g:center size="100">
+                    <g:DockLayoutPanel unit='PCT'>
+                        <g:west size='50'>
+                            <g:VerticalPanel width="100%">
+                                <g:HorizontalPanel>
+                                    <b:Heading size="5" text="Email : "/>
+                                    <b:Heading size="5" ui:field="hEmail"/>
+                                </g:HorizontalPanel>
+                                <g:HorizontalPanel>
+                                    <b:Heading size="5" text="Surname : "/>
+                                    <b:Heading size="5" ui:field="hSurname"/>
+                                </g:HorizontalPanel>
+                            </g:VerticalPanel>
+                        </g:west>
+                        <g:center size='50'>
+                            <g:VerticalPanel>
+                                <g:HorizontalPanel>
+                                    <b:CheckBox ui:field="cbSelection" addStyleNames="{res.gwtp.checkBoxes}"/>
+                                    <b:Heading size="5" text="disable selection"/>
+                                </g:HorizontalPanel>
+                                <g:HorizontalPanel>
+                                    <b:CheckBox ui:field="cbCheckboxes" addStyleNames="{res.gwtp.checkBoxes}"/>
+                                    <b:Heading size="5" text="disable checkboxes"/>
+                                </g:HorizontalPanel>
+                                <b:Button type="INFO" text="GO!"/>
+                            </g:VerticalPanel>
+                        </g:center>
+                    </g:DockLayoutPanel>
+                </g:center>
+            </g:SplitLayoutPanel>
+        </b:WellForm>
     </g:HTMLPanel>
 </ui:UiBinder>

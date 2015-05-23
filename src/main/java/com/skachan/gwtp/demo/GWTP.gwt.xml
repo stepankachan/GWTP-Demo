@@ -3,15 +3,11 @@
     <!-- Inherit the core Web Toolkit stuff. -->
     <inherits name='com.google.gwt.user.User' />
     <inherits name='com.google.gwt.inject.Inject' />
-    <inherits name="com.github.gwtbootstrap.Bootstrap"/>
-
-    <!-- Default css -->
     <inherits name='com.google.gwt.user.theme.standard.Standard' />
-
-    <!-- Other module inherits -->
     <inherits name='com.gwtplatform.dispatch.Dispatch' />
-    
+    <inherits name="com.github.gwtbootstrap.Bootstrap"/>
     <inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
+    <inherits name="com.google.gwt.resources.Resources" />
 
     <source path='client' />
     <source path='shared' />
