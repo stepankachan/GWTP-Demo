@@ -18,6 +18,10 @@ import com.skachan.gwtp.demo.shared.action.GetUsersResult;
 import javax.inject.Inject;
 import java.util.List;
 
+/**
+ * @author Stepan Kachan
+ */
+
 public class ApplicationPresenter extends Presenter<ApplicationPresenter.MyView, ApplicationPresenter.MyProxy>
         implements ApplicationUiHandlers {
 

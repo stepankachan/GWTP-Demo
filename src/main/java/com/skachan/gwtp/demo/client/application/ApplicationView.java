@@ -40,6 +40,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Stepan Kachan
+ */
+
 public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> implements ApplicationPresenter.MyView {
     interface Binder extends UiBinder<Widget, ApplicationView> {
     }
