@@ -39,10 +39,6 @@ public class ApplicationPresenter extends Presenter<ApplicationPresenter.MyView,
         getView().setUiHandlers(this);
     }
 
-    @Override
-    public void getUsers() {
-    }
-
 
     @Override
     protected void onReset() {

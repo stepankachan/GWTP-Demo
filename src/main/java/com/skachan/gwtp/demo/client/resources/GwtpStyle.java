@@ -10,5 +10,4 @@ public interface GwtpStyle extends CssResource{
     String container();
     String checkBoxes();
     String userWidgetHeading();
-    String blackThumbnailLink();
 }

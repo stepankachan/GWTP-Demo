@@ -10,6 +10,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
 import com.skachan.gwtp.demo.client.application.custom.widget.UserWidget;
 import com.skachan.gwtp.demo.client.resources.MyResources;
 import com.skachan.gwtp.demo.server.model.User;
@@ -26,14 +27,16 @@ public class SelectedUsersPopup extends Composite {
 
     interface ModalUiBinder extends UiBinder<Widget, SelectedUsersPopup> {
     }
+
     @UiField
     Modal modal;
     @UiField
     Thumbnails contentPanel;
 
+    @Inject
     public SelectedUsersPopup() {
+        MyResources.INSTANCE.gwtp().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
-        modal.addStyleName(MyResources.INSTANCE.gwtp().blackThumbnailLink());
     }
 
     @UiHandler("btnOk")
@@ -41,17 +44,13 @@ public class SelectedUsersPopup extends Composite {
         modal.hide();
     }
 
-    public void show(){
-        modal.show();
-    }
-
-    public Modal addUsers(Collection<User> selectedUsers){
-        for(User user : selectedUsers){
+    public Modal addUsers(Collection<User> selectedUsers) {
+        for (User user : selectedUsers) {
             ThumbnailLink thumbnailLink = new ThumbnailLink();
             thumbnailLink.add(new UserWidget(user));
             contentPanel.add(thumbnailLink);
         }
         return modal;
-}
+    }
 
 }
