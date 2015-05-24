@@ -1,0 +1,15 @@
+.container {
+    position: absolute;
+    top: 20%;
+    left: 36%;
+}
+
+.checkBoxes {
+    margin-top: 10px;
+}
+
+.userWidgetHeading {
+    margin-bottom: 6px;
+    margin-top: 1px;
+    margin-left: 7px
+}

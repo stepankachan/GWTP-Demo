@@ -8,9 +8,9 @@ import com.skachan.gwtp.demo.client.application.ApplicationModule;
 import com.skachan.gwtp.demo.client.place.NameTokens;
 
 /**
- * See more on setting up the PlaceManager on <a
- * href="// See more on: https://github.com/ArcBees/GWTP/wiki/PlaceManager">DefaultModule's > DefaultPlaceManager</a>
+ * @author Stepan Kachan
  */
+
 public class ClientModule extends AbstractPresenterModule {
 
     private static final String ANALYTICS_ACCOUNT = "UA-8319339-6";

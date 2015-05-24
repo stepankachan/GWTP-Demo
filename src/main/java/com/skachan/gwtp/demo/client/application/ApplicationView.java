@@ -40,6 +40,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * @author Stepan Kachan
+ */
+
 public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> implements ApplicationPresenter.MyView {
     interface Binder extends UiBinder<Widget, ApplicationView> {
     }
@@ -97,7 +101,6 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
                     super.render(context, object, sb);
             }
         };
-        DefaultSelectionEventManager.CheckboxEventTranslator s = new DefaultSelectionEventManager.CheckboxEventTranslator();
         checkColumn.setFieldUpdater(new FieldUpdater<User, Boolean>() {
             @Override
             public void update(int index, User object, Boolean value) {
@@ -204,11 +207,10 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         cbSelection.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
             @Override
             public void onValueChange(ValueChangeEvent<Boolean> event) {
-                if (event.getValue()){
+                if (event.getValue()) {
                     dataGrid.setSelectionModel(selectionModel,
                             DefaultSelectionEventManager.<User>createWhitelistManager());
-                }
-                else
+                } else
                     dataGrid.setSelectionModel(selectionModel,
                             DefaultSelectionEventManager.<User>createDefaultManager());
                 dataGrid.redraw();

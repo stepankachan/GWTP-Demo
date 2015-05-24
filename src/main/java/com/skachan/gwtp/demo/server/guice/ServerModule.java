@@ -4,6 +4,10 @@ import com.gwtplatform.dispatch.rpc.server.guice.HandlerModule;
 import com.skachan.gwtp.demo.server.dispath.GetUsersHandler;
 import com.skachan.gwtp.demo.shared.action.GetUsersAction;
 
+/**
+ * @author Stepan Kachan
+ */
+
 public class ServerModule extends HandlerModule {
     @Override
     protected void configureHandlers() {
