@@ -29,6 +29,7 @@
     </properties>
 
     <build>
+        <finalName>gwtp-demo</finalName>
         <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
         <resources>
             <resource>

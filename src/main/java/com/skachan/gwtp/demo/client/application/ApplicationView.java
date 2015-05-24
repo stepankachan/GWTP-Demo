@@ -36,7 +36,7 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
     interface Binder extends UiBinder<Widget, ApplicationView> {
     }
 
-    private ListDataProvider<User> userDataProvider = new ListDataProvider<>();
+    ListDataProvider<User> userDataProvider = new ListDataProvider<>();
     MultiSelectionModel<User> selectionModel = new MultiSelectionModel<>(KEY_PROVIDER);
 
     public static ProvidesKey<User> KEY_PROVIDER = new ProvidesKey<User>() {
@@ -61,14 +61,7 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         MyResources.INSTANCE.gwtp().ensureInjected();
         initWidget(uiBinder.createAndBindUi(this));
         initTableColumns();
-        btnGo.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent event) {
-                SelectedUsersPopup popup = new SelectedUsersPopup();
-                popup.addUsers(selectionModel.getSelectedSet());
-                popup.show();
-            }
-        });
+        initComponents();
     }
 
     @Override
@@ -80,6 +73,7 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         Column<User, Boolean> checkColumn = new Column<User, Boolean>(new CheckboxCell(true, false)) {
             @Override
             public Boolean getValue(User object) {
+                btnGo.setEnabled(!selectionModel.getSelectedSet().isEmpty());
                 return selectionModel.isSelected(object);
             }
         };
@@ -125,7 +119,7 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
             @Override
             public void update(int index, User object, Boolean value) {
                 selectionModel.setSelected(object, value);
-            }
+        }
         });
         dataGrid.addColumn(checkColumn, checkBoxHeader);
         dataGrid.setColumnWidth(checkColumn, 10, Style.Unit.PX);
@@ -138,6 +132,18 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         dataGrid.setSelectionModel(selectionModel);
         userDataProvider.addDataDisplay(dataGrid);
         dataGrid.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
+
+    }
+
+    private void initComponents(){
+        btnGo.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent event) {
+                SelectedUsersPopup popup = new SelectedUsersPopup();
+                popup.addUsers(selectionModel.getSelectedSet()).show();
+            }
+        });
+
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {

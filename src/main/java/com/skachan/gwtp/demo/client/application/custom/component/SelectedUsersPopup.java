@@ -45,12 +45,13 @@ public class SelectedUsersPopup extends Composite {
         modal.show();
     }
 
-    public void addUsers(Collection<User> selectedUsers){
+    public Modal addUsers(Collection<User> selectedUsers){
         for(User user : selectedUsers){
             ThumbnailLink thumbnailLink = new ThumbnailLink();
             thumbnailLink.add(new UserWidget(user));
             contentPanel.add(thumbnailLink);
         }
+        return modal;
 }
 
 }
