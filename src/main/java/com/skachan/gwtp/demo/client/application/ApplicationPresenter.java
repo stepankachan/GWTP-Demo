@@ -9,7 +9,6 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.skachan.gwtp.demo.client.place.NameTokens;
 import com.skachan.gwtp.demo.server.model.User;
@@ -34,7 +33,7 @@ public class ApplicationPresenter extends Presenter<ApplicationPresenter.MyView,
     private final DispatchAsync dispatcher;
 
     @Inject
-    ApplicationPresenter(EventBus eventBus, MyView view, MyProxy proxy, PlaceManager placeManager,DispatchAsync dispatcher) {
+    ApplicationPresenter(EventBus eventBus, MyView view, MyProxy proxy, DispatchAsync dispatcher) {
         super(eventBus, view, proxy, RevealType.Root);
         this.dispatcher = dispatcher;
         getView().setUiHandlers(this);
@@ -42,23 +41,25 @@ public class ApplicationPresenter extends Presenter<ApplicationPresenter.MyView,
 
     @Override
     public void getUsers() {
-
     }
+
 
     @Override
     protected void onReset() {
         super.onReset();
-        dispatcher.execute(new GetUsersAction(),new AsyncCallback<GetUsersResult>(){
-
+        dispatcher.execute(new GetUsersAction(), new AsyncCallback<GetUsersResult>() {
             @Override
             public void onFailure(Throwable caught) {
                 Window.alert("get users error");
-        }
+            }
+
             @Override
             public void onSuccess(GetUsersResult result) {
-            getView().populateTable(result.getUserList());
+                getView().populateTable(result.getUserList());
             }
         });
     }
+
+
 
 }

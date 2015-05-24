@@ -91,27 +91,7 @@ public class CustomSelectionCell<T>  extends AbstractInputCell<String, String> {
         if (index == null) {
             return -1;
         }
-        return index.intValue();
+        return index;
     }
 
-  /*  private static final Template TEMPLATE = GWT.create(Template.class);
-    private List<String> options;
-
-    interface Template extends SafeHtmlTemplates {
-        @Template("<option value=\"{0}\" title=\"{1}\">{1}</option>")
-        SafeHtml optionTemplate(String key, String text);
-    }
-
-    public CustomSelectableCell(List<String> options) {
-        super(options);
-        this.options = options;
-    }
-
-    @Override
-    public void render(Context context, String string, SafeHtmlBuilder sb) {
-        sb.appendHtmlConstant("<select tabindex=\"-1\" style=\"min-width: 100px; width:100px !important; margin: 0 !important;\">");
-        for(String value : options) {
-            sb.append(TEMPLATE.optionTemplate(value, value));
-        }
-    }*/
 }

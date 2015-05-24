@@ -4,33 +4,41 @@ import com.github.gwtbootstrap.client.ui.Button;
 import com.github.gwtbootstrap.client.ui.CheckBox;
 import com.github.gwtbootstrap.client.ui.DataGrid;
 import com.github.gwtbootstrap.client.ui.Heading;
+import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.DefaultSelectionEventManager;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
+import com.google.gwt.view.client.NoSelectionModel;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 import com.skachan.gwtp.demo.client.application.custom.component.SelectedUsersPopup;
-import com.skachan.gwtp.demo.client.application.custom.widget.CheckBoxHeader;
 import com.skachan.gwtp.demo.client.application.custom.widget.CustomSelectionCell;
+import com.skachan.gwtp.demo.client.application.custom.widget.UsersCheckBoxHeader;
 import com.skachan.gwtp.demo.client.resources.MyResources;
 import com.skachan.gwtp.demo.server.model.Role;
 import com.skachan.gwtp.demo.server.model.User;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> implements ApplicationPresenter.MyView {
     interface Binder extends UiBinder<Widget, ApplicationView> {
@@ -38,6 +46,7 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
 
     ListDataProvider<User> userDataProvider = new ListDataProvider<>();
     MultiSelectionModel<User> selectionModel = new MultiSelectionModel<>(KEY_PROVIDER);
+    private Set<User> selectedRows = new HashSet<>();
 
     public static ProvidesKey<User> KEY_PROVIDER = new ProvidesKey<User>() {
         @Override
@@ -70,13 +79,37 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
     }
 
     private void initTableColumns() {
+
         Column<User, Boolean> checkColumn = new Column<User, Boolean>(new CheckboxCell(true, false)) {
             @Override
             public Boolean getValue(User object) {
-                btnGo.setEnabled(!selectionModel.getSelectedSet().isEmpty());
-                return selectionModel.isSelected(object);
+                return selectedRows.contains(object);
+            }
+
+            @Override
+            public void render(Cell.Context context, User object, SafeHtmlBuilder sb) {
+                if (cbCheckboxes.getValue()) {
+                    if (selectedRows.contains(object))
+                        sb.appendHtmlConstant("<input type=\"checkbox\" tabindex=\"-1\" checked disabled=\"disabled\"/>");
+                    else
+                        sb.appendHtmlConstant("<input type='checkbox' disabled=disabled></input>");
+                } else
+                    super.render(context, object, sb);
             }
         };
+
+        checkColumn.setFieldUpdater(new FieldUpdater<User, Boolean>() {
+            @Override
+            public void update(int index, User object, Boolean value) {
+                if (!value)
+                    selectedRows.remove(object);
+                else
+                    selectedRows.add(object);
+                btnGo.setEnabled(!selectedRows.isEmpty());
+                dataGrid.redraw();
+            }
+        });
+
 
         TextColumn<User> idColumn = new TextColumn<User>() {
             @Override
@@ -114,14 +147,17 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
                 }
             }
         });
-        CheckBoxHeader checkBoxHeader = new CheckBoxHeader(selectionModel, userDataProvider);
-        checkColumn.setFieldUpdater(new FieldUpdater<User, Boolean>() {
+        final UsersCheckBoxHeader usersCheckBoxHeader = new UsersCheckBoxHeader(selectedRows, userDataProvider, dataGrid, btnGo) {
             @Override
-            public void update(int index, User object, Boolean value) {
-                selectionModel.setSelected(object, value);
-        }
-        });
-        dataGrid.addColumn(checkColumn, checkBoxHeader);
+            public void render(Cell.Context context, SafeHtmlBuilder sb) {
+                if (cbCheckboxes.getValue()) {
+                    sb.appendHtmlConstant("<input type='checkbox' disabled=disabled></input>");
+                    // sb.appendHtmlConstant("<input type=\"checkbox\" tabindex=\"-1\" checked disabled=\"disabled\"/>");
+                } else
+                    super.render(context, sb);
+            }
+        };
+        dataGrid.addColumn(checkColumn, usersCheckBoxHeader);
         dataGrid.setColumnWidth(checkColumn, 10, Style.Unit.PX);
         dataGrid.addColumn(idColumn, "Id");
         dataGrid.setColumnWidth(idColumn, 50, Style.Unit.PX);
@@ -129,18 +165,17 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         dataGrid.setColumnWidth(firstNameColumn, 50, Style.Unit.PX);
         dataGrid.addColumn(categoryColumn, "Role");
         dataGrid.setColumnWidth(categoryColumn, 50, Style.Unit.PX);
-        dataGrid.setSelectionModel(selectionModel);
+        dataGrid.setSelectionModel(selectionModel, DefaultSelectionEventManager.<User>createDefaultManager());
         userDataProvider.addDataDisplay(dataGrid);
         dataGrid.setKeyboardSelectionPolicy(HasKeyboardSelectionPolicy.KeyboardSelectionPolicy.DISABLED);
-
     }
 
-    private void initComponents(){
+    private void initComponents() {
         btnGo.addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
                 SelectedUsersPopup popup = new SelectedUsersPopup();
-                popup.addUsers(selectionModel.getSelectedSet()).show();
+                popup.addUsers(selectedRows).show();
             }
         });
 
@@ -149,6 +184,26 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
             public void onSelectionChange(SelectionChangeEvent event) {
                 hEmail.setText(" " + selectionModel.getSelectedSet().iterator().next().getEmail());
                 hSurname.setText(" " + selectionModel.getSelectedSet().iterator().next().getSurname());
+            }
+        });
+
+        cbCheckboxes.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Boolean> event) {
+                dataGrid.redraw();
+            }
+        });
+
+        cbSelection.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<Boolean> event) {
+                if (event.getValue())
+                    dataGrid.setSelectionModel(new NoSelectionModel<User>(),
+                            DefaultSelectionEventManager.<User>createWhitelistManager());
+                else
+                    dataGrid.setSelectionModel(selectionModel,
+                            DefaultSelectionEventManager.<User>createDefaultManager());
+                dataGrid.redraw();
             }
         });
     }
