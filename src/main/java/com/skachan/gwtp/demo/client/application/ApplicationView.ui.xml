@@ -5,6 +5,7 @@
     <ui:with field="res" type="com.skachan.gwtp.demo.client.resources.MyResources"/>
 
     <g:HTMLPanel addStyleNames="{res.gwtp.container}">
+
         <b:WellForm>
             <g:SplitLayoutPanel ui:field="layout" width="400px" height="500px">
                 <g:north size="300">
@@ -35,7 +36,7 @@
                                     <b:CheckBox ui:field="cbCheckboxes" addStyleNames="{res.gwtp.checkBoxes}"/>
                                     <b:Heading size="5" text="disable checkboxes"/>
                                 </g:HorizontalPanel>
-                                <b:Button type="INFO" text="GO!" ui:field="btnGo"/>
+                                <b:Button type="INFO" text="GO!" ui:field="btnGo" enabled="false"/>
                             </g:VerticalPanel>
                         </g:center>
                     </g:DockLayoutPanel>

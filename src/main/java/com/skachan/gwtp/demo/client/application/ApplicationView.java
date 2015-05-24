@@ -121,6 +121,12 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
             }
         });
         CheckBoxHeader checkBoxHeader = new CheckBoxHeader(selectionModel, userDataProvider);
+        checkColumn.setFieldUpdater(new FieldUpdater<User, Boolean>() {
+            @Override
+            public void update(int index, User object, Boolean value) {
+                selectionModel.setSelected(object, value);
+            }
+        });
         dataGrid.addColumn(checkColumn, checkBoxHeader);
         dataGrid.setColumnWidth(checkColumn, 10, Style.Unit.PX);
         dataGrid.addColumn(idColumn, "Id");
