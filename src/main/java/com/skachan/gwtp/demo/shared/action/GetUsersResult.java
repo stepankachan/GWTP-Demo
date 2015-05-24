@@ -1,22 +1,22 @@
 package com.skachan.gwtp.demo.shared.action;
 
 import com.gwtplatform.dispatch.rpc.shared.Result;
-import com.skachan.gwtp.demo.server.entity.User;
+import com.skachan.gwtp.demo.server.model.User;
 
 import java.util.List;
 
 /**
  * @author Stepan Kachan
  */
-public class GetPersonListResult implements Result {
+public class GetUsersResult implements Result {
 
     private List<User> userList;
 
     @SuppressWarnings("unused")
-    public GetPersonListResult() {
+    public GetUsersResult() {
     }
 
-    public GetPersonListResult(List<User> userList) {
+    public GetUsersResult(List<User> userList) {
         this.userList = userList;
     }
 

@@ -1,4 +1,4 @@
-package com.skachan.gwtp.demo.server.entity;
+package com.skachan.gwtp.demo.server.model;
 
 import java.io.Serializable;
 
@@ -12,6 +12,17 @@ public class User implements Serializable{
     private String surname;
     private String email;
     private Role role;
+
+    public User() {
+    }
+
+    public User(long id, String name, String surname, String email, Role role) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.role = role;
+    }
 
     public long getId() {
         return id;

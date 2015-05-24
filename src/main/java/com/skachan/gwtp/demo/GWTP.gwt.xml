@@ -3,20 +3,17 @@
     <!-- Inherit the core Web Toolkit stuff. -->
     <inherits name='com.google.gwt.user.User' />
     <inherits name='com.google.gwt.inject.Inject' />
-    <inherits name="com.github.gwtbootstrap.Bootstrap"/>
-
-    <!-- Default css -->
     <inherits name='com.google.gwt.user.theme.standard.Standard' />
-
-    <!-- Other module inherits -->
     <inherits name='com.gwtplatform.dispatch.Dispatch' />
-    
+    <inherits name="com.github.gwtbootstrap.Bootstrap"/>
     <inherits name='com.gwtplatform.mvp.MvpWithEntryPoint' />
+    <inherits name="com.google.gwt.resources.Resources" />
 
     <source path='client' />
     <source path='shared' />
+    <source path='server'/>
 
-    <set-configuration-property name="gin.ginjector.modules" 
-                                value="com.skachan.gwtp.demo.client.gin.ClientModule"/>
-    <set-configuration-property name="CssResource.enableGss" value="true"/>
+    <stylesheet src='gwtp.css'/>
+
+    <set-configuration-property name="gin.ginjector.modules" value="com.skachan.gwtp.demo.client.gin.ClientModule"/>
 </module>
