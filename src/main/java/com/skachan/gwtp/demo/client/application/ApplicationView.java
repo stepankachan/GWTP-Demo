@@ -47,6 +47,7 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
     ListDataProvider<User> userDataProvider = new ListDataProvider<>();
     MultiSelectionModel<User> selectionModel = new MultiSelectionModel<>(KEY_PROVIDER);
     private Set<User> selectedRows = new HashSet<>();
+    private boolean allSelected;
 
     public static ProvidesKey<User> KEY_PROVIDER = new ProvidesKey<User>() {
         @Override
@@ -151,12 +152,15 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
             @Override
             public void render(Cell.Context context, SafeHtmlBuilder sb) {
                 if (cbCheckboxes.getValue()) {
-                    sb.appendHtmlConstant("<input type='checkbox' disabled=disabled></input>");
-                    // sb.appendHtmlConstant("<input type=\"checkbox\" tabindex=\"-1\" checked disabled=\"disabled\"/>");
+                    if(selectedRows.size() == userDataProvider.getList().size())
+                        sb.appendHtmlConstant("<input type=\"checkbox\" tabindex=\"-1\" checked disabled=\"disabled\"/>");
+                    else
+                        sb.appendHtmlConstant("<input type='checkbox' disabled=disabled></input>");
                 } else
                     super.render(context, sb);
             }
         };
+
         dataGrid.addColumn(checkColumn, usersCheckBoxHeader);
         dataGrid.setColumnWidth(checkColumn, 10, Style.Unit.PX);
         dataGrid.addColumn(idColumn, "Id");
@@ -182,6 +186,10 @@ public class ApplicationView extends ViewWithUiHandlers<ApplicationUiHandlers> i
         selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent event) {
+                if(selectionModel.getSelectedSet().isEmpty()){
+                    hEmail.setText("");
+                    hSurname.setText("");
+                }
                 hEmail.setText(" " + selectionModel.getSelectedSet().iterator().next().getEmail());
                 hSurname.setText(" " + selectionModel.getSelectedSet().iterator().next().getSurname());
             }
